@@ -77,6 +77,12 @@ export const reducer = (state: RootState, action: Action) => {
         );
       return { ...state };
     }
+    case ACTION_TYPES.REMOVE_SUBCAMPAIGN: {
+      state.campaignData.subCampaigns = state.campaignData.subCampaigns.filter(
+        (_, index) => index !== action.payload
+      );
+      return { ...state };
+    }
     case ACTION_TYPES.EDIT_INFO: {
       const infoData: Record<string, string> = action.payload;
       const [key, val] = Object.entries(infoData).flat();

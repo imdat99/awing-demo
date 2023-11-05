@@ -7,6 +7,7 @@ import {
   Grid,
   IconButton,
   TextField,
+  Tooltip,
 } from "@mui/material";
 import {
   Fragment,
@@ -16,11 +17,15 @@ import {
   useRef,
   useState,
 } from "react";
-import { MdOutlineAdd } from "react-icons/md";
+import { MdDelete, MdOutlineAdd } from "react-icons/md";
 import { SubCampaign } from "../../../common/types";
 import { deepCompare, deepCopy } from "../../../common/utils";
 import { useCampaignDispatch, useCampaignStore } from "../../../store";
-import { addSubCampaign, editSubInfo } from "../../../store/action";
+import {
+  addSubCampaign,
+  editSubInfo,
+  removeSubCampaign,
+} from "../../../store/action";
 import SubCampaignCard from "./SubCampaignCard";
 import SubCampaignTable from "./SubCampaignTable";
 
@@ -39,6 +44,10 @@ const SubCampaignTab = () => {
   const handleAddSubCampaign = () => {
     dispatch(addSubCampaign(""));
     setSelectCard(subCampaigns.length);
+  };
+  const handleRemoveSubCampaign = () => {
+    dispatch(removeSubCampaign(selectCard));
+    setSelectCard(subCampaigns.length - 2);
   };
 
   const [selectCard, setSelectCard] = useState(0);
@@ -76,17 +85,39 @@ const SubCampaignTab = () => {
             paddingBottom: "10px",
           }}
         >
-          <div>
-            <IconButton
-              onClick={handleAddSubCampaign}
-              aria-label="add"
-              size="large"
-              color={"secondary"}
-              style={{ backgroundColor: "rgb(237, 237, 237)" }}
-            >
-              <MdOutlineAdd fontSize="inherit" />
-            </IconButton>
-          </div>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "space-between",
+            }}
+          >
+            <Tooltip title="Thêm mới" placement="right">
+              <IconButton
+                onClick={handleAddSubCampaign}
+                aria-label="add"
+                size="large"
+                color={"secondary"}
+                style={{ backgroundColor: "rgb(237, 237, 237)" }}
+              >
+                <MdOutlineAdd fontSize="inherit" />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Xoá" placement="right">
+              <span>
+                <IconButton
+                  disabled={subCampaigns.length === 1}
+                  onClick={handleRemoveSubCampaign}
+                  aria-label="delete"
+                  size="large"
+                  color={"secondary"}
+                  style={{ backgroundColor: "rgb(237, 237, 237)" }}
+                >
+                  <MdDelete fontSize="inherit" />
+                </IconButton>
+              </span>
+            </Tooltip>
+          </Box>
           {subCampaigns.map((subCampaign, i) => {
             const reRender =
               recentSubCampaigns.current &&

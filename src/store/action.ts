@@ -2,6 +2,7 @@ import { DispatchAction } from "../common/types";
 
 export enum ACTION_TYPES {
   ADD_SUBCAMPAIGN = "ADD_SUBCAMPAIGN",
+  REMOVE_SUBCAMPAIGN = "REMOVE_SUBCAMPAIGN",
   ADD_ADS = "ADD_ADS",
   REMOVE_ADS = "REMOVE_ADS",
   EDIT_INFO = "EDIT_INFO",
@@ -12,6 +13,12 @@ export enum ACTION_TYPES {
 export const addSubCampaign: DispatchAction = () => {
   return {
     type: ACTION_TYPES.ADD_SUBCAMPAIGN,
+  };
+};
+export const removeSubCampaign: DispatchAction<number> = (payload) => {
+  return {
+    type: ACTION_TYPES.REMOVE_SUBCAMPAIGN,
+    payload,
   };
 };
 export const addAds: DispatchAction<Required<number>> = (payload) => {
