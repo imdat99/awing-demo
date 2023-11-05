@@ -39,12 +39,14 @@ describe("Customtab", () => {
   });
 
   it("CustomTab renders tabs and another Hmtl tags", () => {
-    render(
-      <CustomTab>
-        <TabPanel label="Tab 1">Content of Tab 1</TabPanel>
-        <div>Custom Content</div>
-      </CustomTab>
-    );
-    expect(screen.queryByText("Custom Content")).toBeNull();
+    expect(() =>
+      render(
+        <CustomTab>
+          <TabPanel label="Tab 1">Content of Tab 1</TabPanel>
+          <div>Custom Content</div>
+        </CustomTab>,
+        {}
+      )
+    ).toThrowError();
   });
 });

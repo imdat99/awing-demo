@@ -1,6 +1,8 @@
 import { Box, Tab, Tabs } from "@mui/material";
 import React, { Fragment, useMemo, useState } from "react";
 
+const devMode = !process.env.NODE_ENV || process.env.NODE_ENV === "development";
+
 type PanelProps = {
   children: React.ReactNode;
   label: React.ReactNode;
@@ -22,11 +24,17 @@ const CustomTab: React.FC<ITabProps> = ({ children }) => {
   const [value, setValue] = useState(0);
   const panels = useMemo(() => {
     const tmp = Array.isArray(children) ? children : [children];
-    if (!process.env.NODE_ENV || process.env.NODE_ENV === "development") {
+    if (devMode) {
       // dev code
       tmp.forEach((el) => {
         if (typeof el.type === "string" || el.type?.name !== "TabPanel") {
           throw new Error("Children of CustomTab must be TabPanel!");
+        }
+      });
+    } else {
+      tmp.forEach((el) => {
+        if (typeof el.type !== "function") {
+          throw new Error(`${el.type} is not panel of Tabs!`);
         }
       });
     }
